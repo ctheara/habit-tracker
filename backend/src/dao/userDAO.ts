@@ -2,12 +2,18 @@ import { pool } from "../config/db.js";
 
 import { User } from "../models/userModel.js";
 
-const getFirstUser = async () => {
+/***
+ *
+ */
+const findAUserByEmail = async (email: string) => {
   try {
-    const result = await pool.query("SELECT * FROM users");
-    console.log(result.rows[0].first_name);
+    const result = await pool.query(`SELECT * FROM users WHERE email = $1`, [
+      email,
+    ]);
+    return result.rows[0];
   } catch (err) {
-    throw new Error("Error while querying");
+    console.error("Error while querying for user:", err);
+    throw new Error("Error while querying for user");
   }
 };
 
@@ -26,7 +32,7 @@ const createUser = async (user: User) => {
     const values = [user.firstName, user.lastName, user.email, user.password];
 
     const result = await client.query(insertStatement, values);
-    console.log("User created:", result.rows[0]);
+    // console.log("User created:", result.rows[0]);
     return result.rows[0];
   } catch (err) {
     console.error("Error while creating user");
@@ -36,4 +42,4 @@ const createUser = async (user: User) => {
   }
 };
 
-export { getFirstUser, createUser };
+export { findAUserByEmail, createUser };
