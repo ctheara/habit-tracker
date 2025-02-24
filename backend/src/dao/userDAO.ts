@@ -25,14 +25,13 @@ const createUser = async (user: User) => {
   const client = await pool.connect();
   try {
     const insertStatement = `
-    INSERT INTO users (first_name, last_name, email, password)
-    VALUES ($1, $2, $3, $4)
+    INSERT INTO users (first_name, last_name, email, password, role)
+    VALUES ($1, $2, $3, $4, 'user')
     RETURNING *;
     `;
     const values = [user.firstName, user.lastName, user.email, user.password];
 
     const result = await client.query(insertStatement, values);
-    // console.log("User created:", result.rows[0]);
     return result.rows[0];
   } catch (err) {
     console.error("Error while creating user");

@@ -12,7 +12,7 @@ const signUpUser = asyncHandler(async (req, res) => {
   if (!firstName || !lastName || !email || !password) {
     console.log("Input missing error");
     res.status(400).send("Required input fields missing");
-    throw new Error("Required input fieldsmissing");
+    // throw new Error("Required input fieldsmissing");
   }
 
   // stailize the email and other input fields
@@ -30,11 +30,10 @@ const signUpUser = asyncHandler(async (req, res) => {
       email,
       password: hashedPassword,
     };
-    const result = await createUser(user);
+    const userResult = await createUser(user);
 
-    if (result) {
-      const token = generateToken(email);
-      // console.log(`userContorller: reulst: ${JSON.stringify(result)}`);
+    if (userResult) {
+      const token = generateToken(userResult.id, email);
       res.status(201).json({ token: token });
     }
   } catch (err: any) {
@@ -43,48 +42,33 @@ const signUpUser = asyncHandler(async (req, res) => {
 });
 
 const loginUser = asyncHandler(async (req, res) => {
-  // get res body
-  // validate res body
-  // check username/password and find user in database
-  // respond with generate jwt token for user
-
-  //   authMiddleware;
   const { email, password } = req.body;
 
   try {
     const user = await findAUserByEmail(email);
-    console.log(JSON.stringify(user));
-
     const match = await bcrypt.compare(password, user.password);
-    console.log(match);
 
     if (match) {
-      //generate token
-      const token = generateToken(email);
+      const token = generateToken(user.id, email);
       res.status(201).json({ token: token });
     } else {
       res.status(401).json({ message: "Unauthorized" });
     }
-
-    // const token = req.header(tokenHeaderKey);
-    // if (jwt.verify(token, jwtSecretKey)) {
-    // return res.send("Successfully Verified");
-    // } else {
-    //   return res.status(401).send(Error);
-    // }
   } catch (err) {
     res.status(401).json({ message: "Login Error" });
   }
 });
 
-const generateToken = (email: string) => {
+const generateToken = (id: number, email: string) => {
   const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
   if (!jwtSecretKey) {
     throw new Error("JWT_SECRET_KEY is not set in the environment variables");
   }
 
-  const token = jwt.sign({ email: email }, jwtSecretKey, { expiresIn: "1h" });
+  const token = jwt.sign({ id: id, email: email }, jwtSecretKey, {
+    expiresIn: "1h",
+  });
   return token;
   // client can store the token as a HttpOnly cookie
   // document.cookie = `token=${token}`

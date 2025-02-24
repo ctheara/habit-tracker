@@ -16,7 +16,10 @@ const protectRoute = asyncHandler(async (req, res, next) => {
         );
       }
 
-      if (jwt.verify(userToken, jwtSecretKey)) {
+      const decoded: any = jwt.verify(userToken, jwtSecretKey);
+
+      if (decoded) {
+        req.user = decoded;
         next();
       }
     } catch (err) {
@@ -25,13 +28,6 @@ const protectRoute = asyncHandler(async (req, res, next) => {
   } else {
     res.status(400).json({ message: "Token invalid or not provided" });
   }
-
-  // const token = req.header(tokenHeaderKey);
-  // if (jwt.verify(token, jwtSecretKey)) {
-  // return res.send("Successfully Verified");
-  // } else {
-  //   return res.status(401).send(Error);
-  // }
 });
 
 export { protectRoute };
