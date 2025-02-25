@@ -1,9 +1,9 @@
-import express from "express";
+import { Router } from "express";
 
 import { signUpUser, loginUser } from "../controllers/userController.js";
 import { protectRoute } from "../middlewares/authMiddleware.js";
 
-const userRouter = express.Router();
+const userRouter = Router();
 
 userRouter.post("/signup", signUpUser);
 
@@ -13,8 +13,8 @@ userRouter.get("/me", protectRoute, (req, res) => {
   res.send("you are Me");
 });
 
-userRouter.get("/:{id}", (req, res) => {
-  // const { id } = req.params;
-});
+// userRouter.get("/:{id}", (req, res) => {
+//   // const { id } = req.params;
+// });
 
-export { userRouter };
+export default userRouter;

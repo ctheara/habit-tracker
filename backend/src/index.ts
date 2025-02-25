@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import swaggerUi from "swagger-ui-express";
 import swaggerDocs from "./swagger.js";
 
-import { userRouter } from "./routes/userRoute.js";
+import userRouter from "./routes/userRoute.js";
 
 dotenv.config();
 

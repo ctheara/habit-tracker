@@ -1,17 +1,17 @@
 import jwt from "jsonwebtoken";
-import asyncHandler from "express-async-handler";
 import bcrypt from "bcrypt";
+import { Request, Response } from "express";
 
 // import { authMiddleware } from "../middlewares/authenticate.js";
 import { createUser, findAUserByEmail } from "../dao/userDAO.js";
 import { User } from "../models/userModel.js";
 
-const signUpUser = asyncHandler(async (req, res) => {
+const signUpUser = async (req: any, res: any) => {
   const { firstName, lastName, email, password } = req.body;
 
   if (!firstName || !lastName || !email || !password) {
     console.log("Input missing error");
-    res.status(400).send("Required input fields missing");
+    return res.status(400).send("Required input fields missing");
     // throw new Error("Required input fieldsmissing");
   }
 
@@ -20,7 +20,7 @@ const signUpUser = asyncHandler(async (req, res) => {
 
   // hashed password, bcrypt (different long salt for every password, generate ran number)
   const salt = await bcrypt.genSalt(10);
-  const hashedPassword = bcrypt.hashSync(password, salt);
+  const hashedPassword = await bcrypt.hashSync(password, salt);
 
   // put user in database
   try {
@@ -34,30 +34,35 @@ const signUpUser = asyncHandler(async (req, res) => {
 
     if (userResult) {
       const token = generateToken(userResult.id, email);
-      res.status(201).json({ token: token });
+      return res.status(201).json({ token: token });
     }
   } catch (err: any) {
-    res.status(400).json({ message: err.message || "Error signing user up" });
+    return res
+      .status(400)
+      .json({ message: err.message || "Error signing user up" });
   }
-});
+};
 
-const loginUser = asyncHandler(async (req, res) => {
+const loginUser = async (req: any, res: any) => {
   const { email, password } = req.body;
 
   try {
     const user = await findAUserByEmail(email);
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
     const match = await bcrypt.compare(password, user.password);
 
     if (match) {
       const token = generateToken(user.id, email);
-      res.status(201).json({ token: token });
+      return res.status(201).json({ token: token });
     } else {
-      res.status(401).json({ message: "Unauthorized" });
+      return res.status(401).json({ message: "Unauthorized" });
     }
   } catch (err) {
-    res.status(401).json({ message: "Login Error" });
+    return res.status(401).json({ message: "Login Error" });
   }
-});
+};
 
 const generateToken = (id: number, email: string) => {
   const jwtSecretKey = process.env.JWT_SECRET_KEY;
