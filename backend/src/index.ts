@@ -4,6 +4,7 @@ import swaggerUi from "swagger-ui-express";
 import swaggerDocs from "./swagger.js";
 
 import userRouter from "./routes/userRoute.js";
+import errorHandler from "./middlewares/errorMiddleware.js";
 
 dotenv.config();
 
@@ -21,6 +22,8 @@ app.use("/user", userRouter);
 app.get("/", (req, res, next) => {
   res.send("Hello, TypeScript with Node.js!");
 });
+
+app.use(errorHandler);
 
 // Server Listen
 app.listen(port, () => {

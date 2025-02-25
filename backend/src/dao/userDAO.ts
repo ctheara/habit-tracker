@@ -12,8 +12,8 @@ const findAUserByEmail = async (email: string) => {
     ]);
     return result.rows[0];
   } catch (err) {
-    console.error("Error while querying for user:", err);
-    throw new Error("Error while querying for user");
+    console.error(`useDAO: Error while querying for user: ${err}`);
+    throw { statusCode: 500, message: "Error while querying for user" };
   }
 };
 
@@ -34,8 +34,8 @@ const createUser = async (user: User) => {
     const result = await client.query(insertStatement, values);
     return result.rows[0];
   } catch (err) {
-    console.error("Error while creating user");
-    throw new Error("Error while creating user");
+    console.error(`useDAO: Error while querying for user: ${err}`);
+    throw { statusCode: 500, message: "Error while querying for user" };
   } finally {
     client.release();
   }

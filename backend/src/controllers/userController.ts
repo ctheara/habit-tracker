@@ -6,13 +6,12 @@ import { Request, Response } from "express";
 import { createUser, findAUserByEmail } from "../dao/userDAO.js";
 import { User } from "../models/userModel.js";
 
-const signUpUser = async (req: any, res: any) => {
+const signUpUser = async (req: any, res: any, next: any) => {
   const { firstName, lastName, email, password } = req.body;
 
   if (!firstName || !lastName || !email || !password) {
     console.log("Input missing error");
-    return res.status(400).send("Required input fields missing");
-    // throw new Error("Required input fieldsmissing");
+    throw { statusCode: 400, message: "Required input fields missing" };
   }
 
   // stailize the email and other input fields
@@ -37,19 +36,17 @@ const signUpUser = async (req: any, res: any) => {
       return res.status(201).json({ token: token });
     }
   } catch (err: any) {
-    return res
-      .status(400)
-      .json({ message: err.message || "Error signing user up" });
+    next(err);
   }
 };
 
-const loginUser = async (req: any, res: any) => {
+const loginUser = async (req: any, res: any, next: any) => {
   const { email, password } = req.body;
 
   try {
     const user = await findAUserByEmail(email);
     if (!user) {
-      return res.status(401).json({ message: "User not found" });
+      throw { statusCode: 401, message: "User not found" };
     }
     const match = await bcrypt.compare(password, user.password);
 
@@ -57,10 +54,11 @@ const loginUser = async (req: any, res: any) => {
       const token = generateToken(user.id, email);
       return res.status(201).json({ token: token });
     } else {
-      return res.status(401).json({ message: "Unauthorized" });
+      throw { statusCode: 401, message: "Unauthorized" };
     }
   } catch (err) {
-    return res.status(401).json({ message: "Login Error" });
+    console.error(err);
+    next(err);
   }
 };
 
@@ -68,7 +66,10 @@ const generateToken = (id: number, email: string) => {
   const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
   if (!jwtSecretKey) {
-    throw new Error("JWT_SECRET_KEY is not set in the environment variables");
+    throw {
+      statusCode: 500,
+      message: "JWT secret key is not set in the environment variables",
+    };
   }
 
   const token = jwt.sign({ id: id, email: email }, jwtSecretKey, {
