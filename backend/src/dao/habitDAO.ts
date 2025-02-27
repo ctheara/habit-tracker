@@ -76,7 +76,39 @@ const getOneHabit = async (habitId: number) => {
   }
 };
 
-const updateHabit = async (habitId: number) => {};
+/**
+ * Update define fields of habit
+ * @param habitId
+ * @param fieldsToUpdate List of { column: string; value: any } for fields to update
+ * @return Number of rows affected
+ */
+const updateHabit = async (
+  habitId: number,
+  fieldsToUpdate: { column: string; value: any }[]
+) => {
+  if (fieldsToUpdate.length < 1) {
+    throw new Error("Founded no fields to update");
+  }
+
+  try {
+    fieldsToUpdate.push({ column: "updated_date", value: new Date() });
+
+    const setClause = fieldsToUpdate
+      .map((field, index) => `${field.column} = $${index + 1}`)
+      .join(", ");
+    const values = fieldsToUpdate.map((field) => field.value);
+    const updateStatement = `UPDATE habits
+      SET ${setClause}
+      WHERE habit_id = ${habitId}`;
+
+    const client = await pool.connect();
+    const result = await client.query(updateStatement, values);
+    return result.rowCount;
+  } catch (err) {
+    console.warn(`habitDAO-updateHabit err: ${JSON.stringify(err)}`);
+    throw { statusCode: 500, message: "Error while updating new habit" };
+  }
+};
 
 /**
  * Delete a given habit

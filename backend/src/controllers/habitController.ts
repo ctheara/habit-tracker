@@ -6,7 +6,7 @@ const createHabit = async (req: any, res: any, next: any) => {
 
   if (!habitName) {
     console.log("Input missing error");
-    throw { statusCode: 400, message: "Required input fields missing" };
+    return next({ statusCode: 400, message: "Required input fields missing" });
   }
 
   try {
@@ -16,7 +16,7 @@ const createHabit = async (req: any, res: any, next: any) => {
       description: description || null,
       motivation: motivation || null,
       duration: duration || null,
-      targetDate: new Date(targetDate) || null,
+      targetDate: targetDate ? new Date(targetDate) : undefined,
     };
 
     const result = await habitDao.createNewHabit(habit);
@@ -63,7 +63,35 @@ const getAHabit = async (req: any, res: any, next: any) => {
 };
 
 const updateAHabit = async (req: any, res: any, next: any) => {
-  res.send(`route`);
+  const { habitId } = req.params;
+  const { habitName, description, motivation, duration, targetDate } = req.body;
+
+  // validation of inputs and type
+
+  try {
+    const fieldsToUpdate: { column: string; value: any }[] = [];
+
+    if (habitName !== undefined)
+      fieldsToUpdate.push({ column: "name", value: habitName });
+    if (description !== undefined)
+      fieldsToUpdate.push({ column: "description", value: description });
+    if (motivation !== undefined)
+      fieldsToUpdate.push({ column: "motivation", value: motivation });
+    if (duration !== undefined)
+      fieldsToUpdate.push({ column: "duration", value: duration });
+    if (targetDate !== undefined)
+      fieldsToUpdate.push({ column: "target_date", value: targetDate });
+
+    if (fieldsToUpdate.length < 1) {
+      return next({ statusCode: 400, message: "Founded no fields to update" });
+    }
+
+    const result = await habitDao.updateHabit(habitId, fieldsToUpdate);
+    return res.json({ message: `Update Successful, rows affected: ${result}` });
+  } catch (err) {
+    console.warn(`Error while updating habit ${JSON.stringify(err)}`);
+    next(err);
+  }
 };
 
 const deleteAHabit = async (req: any, res: any, next: any) => {
