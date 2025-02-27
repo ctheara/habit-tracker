@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 import { Request, Response } from "express";
 
 // import { authMiddleware } from "../middlewares/authenticate.js";
-import { createUser, findAUserByEmail } from "../dao/userDAO.js";
+import { createUser, findAUserByEmail, getAUser } from "../dao/userDAO.js";
 import { User } from "../models/userModel.js";
 
 const signUpUser = async (req: any, res: any, next: any) => {
@@ -62,6 +62,22 @@ const loginUser = async (req: any, res: any, next: any) => {
   }
 };
 
+const getUser = async (req: any, res: any, next: any) => {
+  try {
+    const result = await getAUser(req.user.id);
+
+    if (result) {
+      const mappedUser = mapUserResult(result);
+      return res.status(200).json(mappedUser);
+    } else {
+      throw { statusCode: 500, message: "Cannot find user" };
+    }
+  } catch (err) {
+    console.warn(`Error while getting user ${JSON.stringify(err)}`);
+    next(err);
+  }
+};
+
 const generateToken = (id: number, email: string) => {
   const jwtSecretKey = process.env.JWT_SECRET_KEY;
 
@@ -83,4 +99,20 @@ const generateToken = (id: number, email: string) => {
 // Strech goal
 // const forgotPassword = asyncHandler(async (req, res) => {});
 
-export { signUpUser, loginUser };
+const mapUserResult = (user: any) => {
+  if (user) {
+    const mappeUser: User = {
+      userId: user.id,
+      email: user.email,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      createdAt: user.create_date,
+      updatedAt: user.updated_date,
+    };
+    return mappeUser;
+  } else {
+    throw { statusCode: 500, message: "Error mapping responce" };
+  }
+};
+
+export { signUpUser, loginUser, getUser };

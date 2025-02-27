@@ -12,8 +12,18 @@ const findAUserByEmail = async (email: string) => {
     ]);
     return result.rows[0];
   } catch (err) {
-    console.error(`useDAO: Error while querying for user: ${err}`);
+    console.error(`userDAO: Error while querying for user: ${err}`);
     throw { statusCode: 500, message: "Error while querying for user" };
+  }
+};
+
+const getAUser = async (userId: number) => {
+  try {
+    const result = await pool.query(`SELECT * FROM users WHERE id=${userId}`);
+    return result.rows[0];
+  } catch (err) {
+    console.warn(`userDAO-getAUser err: ${JSON.stringify(err)}`);
+    throw { statusCode: 500, message: "Error while getting user" };
   }
 };
 
@@ -41,4 +51,4 @@ const createUser = async (user: User) => {
   }
 };
 
-export { findAUserByEmail, createUser };
+export { findAUserByEmail, createUser, getAUser };
