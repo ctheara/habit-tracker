@@ -10,11 +10,36 @@ const swaggerDocs = {
       url: "http://localhost:5000", // Update with your actual API URL
     },
   ],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
   paths: {
     "/user/signup": {
       post: {
         summary: "Sign up new user",
         description: "Create a new user in the database",
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  firstName: { type: "string", example: "Mary" },
+                  lastName: { type: "string", example: "Smith" },
+                  email: { type: "string", example: "marysmith@gmail.com" },
+                  password: { type: "string", example: "mypassword" },
+                },
+              },
+            },
+          },
+        },
         responses: {
           "201": {
             description: "User created successfully",
@@ -36,6 +61,20 @@ const swaggerDocs = {
       post: {
         summary: "User login",
         description: "Login and get an authentication token",
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  email: { type: "string", example: "marysmith@gmail.com" },
+                  password: { type: "string", example: "mypassword" },
+                },
+              },
+            },
+          },
+        },
         responses: {
           "200": {
             description: "User logged in successfully",
@@ -60,11 +99,7 @@ const swaggerDocs = {
       get: {
         summary: "Get current user data",
         description: "Fetch the current user's data from the database",
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+        security: [{ bearerAuth: [] }],
         responses: {
           "200": {
             description: "User data retrieved successfully",
@@ -92,11 +127,33 @@ const swaggerDocs = {
       post: {
         summary: "Create a new habit",
         description: "Add a new habit for the logged-in user",
-        security: [
-          {
-            bearerAuth: [],
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  habitName: {
+                    type: "string",
+                    example: "Go to the gym 3 times a week",
+                  },
+                  description: {
+                    type: "string",
+                    example: "I want to go to the gymn more to get stronger",
+                  },
+                  motivation: {
+                    type: "string",
+                    example: "be healthy and string",
+                  },
+                  duration: { type: "string", example: "90 days" },
+                  targetDate: { type: "string", example: "2025-12-20" },
+                },
+              },
+            },
           },
-        ],
+        },
         responses: {
           "200": {
             description: "Habit created successfully",
@@ -121,11 +178,7 @@ const swaggerDocs = {
       get: {
         summary: "Get all habits of the current user",
         description: "Fetch all habits for the logged-in user",
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+        security: [{ bearerAuth: [] }],
         responses: {
           "200": {
             description: "List of habits retrieved successfully",
@@ -164,11 +217,7 @@ const swaggerDocs = {
       get: {
         summary: "Get a specific habit",
         description: "Retrieve a habit by its ID",
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+        security: [{ bearerAuth: [] }],
         parameters: [
           {
             name: "habitId",
@@ -214,11 +263,33 @@ const swaggerDocs = {
       put: {
         summary: "Update a habit",
         description: "Update an existing habit by its ID",
-        security: [
-          {
-            bearerAuth: [],
+        security: [{ bearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  habitName: {
+                    type: "string",
+                    example: "Go to the gym 3 times a week",
+                  },
+                  description: {
+                    type: "string",
+                    example: "I want to go to the gymn more to get stronger",
+                  },
+                  motivation: {
+                    type: "string",
+                    example: "be healthy and string",
+                  },
+                  duration: { type: "string", example: "90 days" },
+                  targetDate: { type: "string", example: "2025-12-20" },
+                },
+              },
+            },
           },
-        ],
+        },
         parameters: [
           {
             name: "habitId",
@@ -256,11 +327,7 @@ const swaggerDocs = {
       delete: {
         summary: "Delete a habit",
         description: "Delete a habit by its ID",
-        security: [
-          {
-            bearerAuth: [],
-          },
-        ],
+        security: [{ bearerAuth: [] }],
         parameters: [
           {
             name: "habitId",
