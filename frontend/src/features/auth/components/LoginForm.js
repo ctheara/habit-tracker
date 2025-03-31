@@ -1,51 +1,78 @@
-// import TextField from '@mui/material/TextField';
-// import Button from '@mui/material/Button';
-// import Box from '@mui/material/Box';
-
-// const LoginForm = () => {
-//     return (
-//         <Box component="section" sx={{ p: 2, border: '1px dashed grey' }}>
-//             <TextField
-//                 required
-//                 id="outlined-required"
-//                 label="Email"
-//                 defaultValue=""
-//             />
-//             <TextField
-//                 required
-//                 id="outlined-required"
-//                 label="Password"
-//                 defaultValue=""
-//             />
-//             <Button variant="contained">Submit</Button>
-//         </Box>
-//     );
-// };
-
-// export default LoginForm;
-
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+} from "@mui/material";
+
+import authClient from "../api/auth-client";
 
 const LoginForm = ({ open, onClose }) => {
-  const navigate = useNavigate(); // Hook for navigation
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+  const [errors, setErrors] = useState({
+    email: false,
+    password: false,
+  });
+  const [apiError, setApiError] = useState("");
+  const navigate = useNavigate();
 
-  const handleLogin = () => {
-    onClose(); // Close the dialog
-    navigate("/create-habit"); // Navigate to the CreateHabit page
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setErrors({ ...errors, [e.target.name]: false });
+    setApiError("");
+  };
+
+  const handleLogin = async () => {
+    const newErrors = {
+      email: !formData.email.trim(),
+      password: !formData.password.trim(),
+    };
+    setErrors(newErrors);
+
+    if (Object.values(newErrors).some((error) => error)) return;
+
+    try {
+      const response = await authClient.loginUser(formData);
+
+      if (response.status === 200) {
+        onClose();
+        navigate("/dashboard");
+      }
+    } catch (error) {}
   };
 
   return (
     <Dialog open={open} onClose={onClose}>
       <DialogTitle>Login</DialogTitle>
       <DialogContent>
-        <TextField fullWidth label="Email" margin="dense" />
-        <TextField fullWidth label="Password" type="password" margin="dense" />
+        <TextField
+          fullWidth
+          label="Email"
+          name="email"
+          margin="dense"
+          value={formData.email}
+          onChange={handleChange}
+          error={errors.email}
+          helperText={errors.email ? "Email is required" : ""}
+        />
+        <TextField
+          fullWidth
+          label="Password"
+          name="password"
+          type="password"
+          margin="dense"
+          value={formData.password}
+          onChange={handleChange}
+          error={errors.password}
+          helperText={errors.password ? "Password is required" : ""}
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

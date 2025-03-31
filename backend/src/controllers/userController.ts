@@ -33,6 +33,15 @@ const signUpUser = async (req: any, res: any, next: any) => {
 
     if (userResult) {
       const token = generateToken(userResult.id, email);
+
+      // use http-only cookies over local session storage to prevent XSS attacks
+      res.cookie("authToken", token, {
+        httpOnly: true,
+        secure: true, // sents over HTTPS
+        sameSite: "Strict", // prevent CSRF attacks
+        maxAge: 1000 * 60 * 60 * 8, // 8 hours expiration
+      });
+
       return res.status(201).json({ token: token });
     }
   } catch (err: any) {
@@ -52,7 +61,16 @@ const loginUser = async (req: any, res: any, next: any) => {
 
     if (match) {
       const token = generateToken(user.id, email);
-      return res.status(201).json({ token: token });
+
+      // use http-only cookies over local session storage to prevent XSS attacks
+      res.cookie("authToken", token, {
+        httpOnly: true,
+        secure: true, // sents over HTTPS
+        sameSite: "Strict", // prevent CSRF attacks
+        maxAge: 1000 * 60 * 60 * 8, // 8 hours expiration
+      });
+
+      return res.status(200).json({ token: token });
     } else {
       throw { statusCode: 401, message: "Unauthorized" };
     }
@@ -60,6 +78,17 @@ const loginUser = async (req: any, res: any, next: any) => {
     console.error(err);
     next(err);
   }
+};
+
+const logoutUser = async (req: any, res: any, next: any) => {
+  res.clearCookie("authToken", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Strict",
+  });
+
+  console.log("logout successfully");
+  res.status(200).json({ message: "Logged out successfully" });
 };
 
 const getUser = async (req: any, res: any, next: any) => {
@@ -115,4 +144,4 @@ const mapUserResult = (user: any) => {
   }
 };
 
-export { signUpUser, loginUser, getUser };
+export { signUpUser, loginUser, logoutUser, getUser };

@@ -43,9 +43,13 @@ const createUser = async (user: User) => {
 
     const result = await client.query(insertStatement, values);
     return result.rows[0];
-  } catch (err) {
+  } catch (err: any) {
     console.error(`useDAO: Error while querying for user: ${err}`);
-    throw { statusCode: 500, message: "Error while querying for user" };
+    if (err.code === "23505") {
+      throw { statusCode: 409, message: "Email already exist in system" };
+    } else {
+      throw { statusCode: 500, message: "Error while querying for user" };
+    }
   } finally {
     client.release();
   }
