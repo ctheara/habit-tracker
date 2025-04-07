@@ -1,9 +1,13 @@
+import { useEffect, useState } from "react";
 import { Button } from "@mui/material";
 
-import authClient from "../auth/api/auth-client";
-import habitClient from "../habit/api/habit-client";
+import authClient from "../features/auth/api/auth-client";
+import habitClient from "../features/habit/api/habit-client";
+import HabitList from "../features/habit/components/HabitList";
 
 const MainDashboard = ({ open, onClose }) => {
+  const [habitList, setHabitList] = useState([]);
+
   const handleLogoff = async () => {
     try {
       await authClient.logoutUser();
@@ -13,25 +17,33 @@ const MainDashboard = ({ open, onClose }) => {
     }
   };
 
-  const handleGetList = async () => {
+  const loadHabitList = async () => {
     try {
       console.log("trying to get habit list");
       const response = await habitClient.getHabitList();
-    } catch (error) {}
+      setHabitList(response.data);
+    } catch (error) {
+      console.error("Failed to load habits:", error);
+    }
   };
+
+  useEffect(() => {
+    loadHabitList();
+  }, []);
 
   return (
     <>
       <h3>
         <ul>
-          <li>See habit, progress, streak counter</li>
+          <li> See habit, progress, streak counter</li>
           <li> View plan that was generated, use input on plan</li>
           <li> See tips on the user habit and general building habit tips </li>
-          <li>Refection note section</li>
+          <li> Refection note section</li>
         </ul>
       </h3>
-      <Button onClick={handleGetList}>Get my habits list</Button>
       <Button onClick={handleLogoff}>Login Off</Button>
+
+      <HabitList habits={habitList} />
     </>
   );
 };

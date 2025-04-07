@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import "../src/assets/App.css";
-import Message from "../src/features/test-delete/Message";
-import CreateHabit from "../src/features/test-delete/SetupHabit";
-import MainDashboard from "../src/features/test-delete/MainDashboard";
+import HomePage from "./components/HomePage";
+import CreateHabitForm from "../src/features/habit/components/CreateHabit";
+import MainDashboard from "./components/MainDashboard";
 
 function App() {
   return (
@@ -48,8 +48,8 @@ function App() {
       <div style={{ paddingTop: "50px" }}>
         {/* Routes */}
         <Routes>
-          <Route path="/" element={<Message />} />
-          <Route path="/create-habit" element={<CreateHabit />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/create-habit" element={<CreateHabitForm />} />
           <Route path="/dashboard" element={<MainDashboard />} />
         </Routes>
       </div>

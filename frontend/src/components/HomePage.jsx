@@ -1,16 +1,12 @@
 import { useState } from "react";
 import Button from "@mui/material/Button";
-import LoginForm from "../auth/components/LoginForm";
-import SignupForm from "../auth/components/SignupForm";
+import LoginForm from "../features/auth/components/LoginForm";
+import SignupForm from "../features/auth/components/SignupForm";
 
 function Message() {
   const [isLoginOpen, setLoginOpen] = useState(false);
   const [isSignupOpen, setSingupOpen] = useState(false);
-  const name = "";
 
-  if (name) {
-    return <h1>Hello {name}</h1>;
-  }
   return (
     <>
       <h1>HabitForge</h1>
