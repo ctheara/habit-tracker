@@ -38,7 +38,7 @@ const signUpUser = async (req: any, res: any, next: any) => {
       res.cookie("authToken", token, {
         httpOnly: true,
         secure: true, // sents over HTTPS
-        sameSite: "Strict", // prevent CSRF attacks
+        sameSite: "None",
         maxAge: 1000 * 60 * 60 * 8, // 8 hours expiration
       });
 
