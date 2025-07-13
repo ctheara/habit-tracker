@@ -7,7 +7,12 @@ const swaggerDocs = {
   },
   servers: [
     {
-      url: "http://localhost:5000", // Update with your actual API URL
+      url: "http://localhost:5000",
+      description: "Local server",
+    },
+    {
+      url: "https://habit-tracker-nyif.onrender.com/",
+      description: "Production server",
     },
   ],
   components: {

@@ -48,6 +48,7 @@ app.use("/habit", habitRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello, TypeScript with Node.js!");
+  console.log("ping");
 });
 
 app.use(errorHandler);

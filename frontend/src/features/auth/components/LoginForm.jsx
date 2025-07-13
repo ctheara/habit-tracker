@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 
 import authClient from "../api/auth-client";
+import { AuthContext } from "../../../App";
 
 const LoginForm = ({ open, onClose }) => {
   const [formData, setFormData] = useState({
@@ -22,6 +23,7 @@ const LoginForm = ({ open, onClose }) => {
   });
   const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -42,6 +44,7 @@ const LoginForm = ({ open, onClose }) => {
       const response = await authClient.loginUser(formData);
 
       if (response.status === 200) {
+        setIsLoggedIn(true);
         onClose();
         navigate("/dashboard");
       }

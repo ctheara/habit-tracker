@@ -7,7 +7,15 @@ A full-stack habit tracker with gamification features. This project helps users 
 ## Deployed URLs
 
 - 🚀 **Frontend:** [https://habit-tracker-fawn-omega.vercel.app](https://habit-tracker-fawn-omega.vercel.app)
-- 🚀 **Backend:** [https://habit-tracker-nyif.onrender.com/](https://habit-tracker-nyif.onrender.com/)
+- 🚀 **Backend:** [https://habit-tracker-nyif.onrender.com/](https://habit-tracker-nyif.onrender.com/) (it may take a few minutes for the service to wake up)
+
+---
+
+## API Documentation
+
+The backend provides interactive API documentation using **Swagger**. You can explore and test all available endpoints directly in your browser:
+
+- [https://habit-tracker-nyif.onrender.com/api-docs](https://habit-tracker-nyif.onrender.com/api-docs)
 
 ## Table of Contents
 
@@ -17,9 +25,7 @@ A full-stack habit tracker with gamification features. This project helps users 
 - [Getting Started](#getting-started)
 - [API & Authentication](#api--authentication)
 - [Deployment Notes](#deployment-notes)
-- [Troubleshooting](#troubleshooting)
 - [User Stories](#user-stories)
-- [License](#license)
 
 ---
 
@@ -43,8 +49,6 @@ A full-stack habit tracker with gamification features. This project helps users 
 - **Database:** PostgreSQL
 - **Authentication:** JWT (JSON Web Token), httpOnly cookies
 - **Other:** Vercel (frontend hosting), Render (backend hosting)
-
----
 
 ---
 
