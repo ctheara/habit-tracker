@@ -66,7 +66,7 @@ const loginUser = async (req: any, res: any, next: any) => {
       res.cookie("authToken", token, {
         httpOnly: true,
         secure: true, // sents over HTTPS
-        sameSite: "Strict", // prevent CSRF attacks
+        sameSite: "None",
         maxAge: 1000 * 60 * 60 * 8, // 8 hours expiration
       });
 
@@ -84,7 +84,7 @@ const logoutUser = async (req: any, res: any, next: any) => {
   res.clearCookie("authToken", {
     httpOnly: true,
     secure: true,
-    sameSite: "Strict",
+    sameSite: "None",
   });
 
   console.log("logout successfully");
