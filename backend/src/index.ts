@@ -14,6 +14,7 @@ dotenv.config();
 // Initialization
 const app = express();
 const port = process.env.PORT || 5000;
+const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
 
 app.use(
   cors({
@@ -53,6 +54,6 @@ app.use(errorHandler);
 
 // Server Listen
 app.listen(port, () => {
-  console.log(`Server is running on http://localhost:${port}`);
-  console.log(`API Docs available at http://localhost:${port}/api-docs`);
+  console.log(`Server is running on ${baseUrl}`);
+  console.log(`API Docs available at ${baseUrl}/api-docs`);
 });
