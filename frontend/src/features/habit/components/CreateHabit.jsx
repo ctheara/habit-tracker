@@ -83,19 +83,22 @@ const CreateHabitForm = () => {
         error={errors.habitName}
         helperText={errors.habitName ? "Field is required" : ""}
       />
-      <Tooltip title="Short desciprtion about your habit">
-        <TextField
-          fullWidth
-          required
-          label="Description"
-          name="description"
-          margin="dense"
-          value={formData.description}
-          onChange={handleChange}
-          error={errors.description}
-          helperText={errors.description ? "Description is required" : ""}
-        />
-      </Tooltip>
+      <TextField
+        fullWidth
+        required
+        label="Description"
+        name="description"
+        margin="dense"
+        value={formData.description}
+        onChange={handleChange}
+        error={errors.description}
+        helperText={errors.description ? "Description is required" : ""}
+      />
+      {/* <Tooltip title="Short description about your habit">
+        <IconButton>
+          <InfoOutlinedIcon fontSize="small" />
+        </IconButton>
+      </Tooltip> */}
       <TextField
         fullWidth
         required
@@ -107,21 +110,23 @@ const CreateHabitForm = () => {
         error={errors.motivation}
         helperText={errors.motivation ? "Motivation is required" : ""}
       />
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DemoContainer components={["DatePicker"]}>
-          <DatePicker
-            required
-            label="Target Date"
-            value={targetDate}
-            onChange={(newValue) => setTargetDate(newValue)}
-          />
-          <Tooltip title="It takes around 60 days for a new habit to stick">
-            <IconButton>
-              <InfoOutlinedIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-        </DemoContainer>
-      </LocalizationProvider>
+      <div style={{ position: "relative", zIndex: 0 }}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <DatePicker
+              required
+              label="Target Date"
+              value={targetDate}
+              onChange={(newValue) => setTargetDate(newValue)}
+            />
+            <Tooltip title="It takes around 60 days for a new habit to stick">
+              <IconButton>
+                <InfoOutlinedIcon fontSize="small" />
+              </IconButton>
+            </Tooltip>
+          </div>
+        </LocalizationProvider>
+      </div>
 
       <br />
       <Button onClick={handleCancel}>Cancel</Button>

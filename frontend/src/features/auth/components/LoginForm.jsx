@@ -46,7 +46,9 @@ const LoginForm = ({ open, onClose }) => {
       if (response.status === 200) {
         setIsLoggedIn(true);
         onClose();
-        navigate("/dashboard");
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 100);
       }
     } catch (error) {}
   };

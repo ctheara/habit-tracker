@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 
 import authClient from "../api/auth-client";
+import { AuthContext } from "../../../App";
 
 const SignupForm = ({ open, onClose }) => {
   const [formData, setFormData] = useState({
@@ -26,6 +27,7 @@ const SignupForm = ({ open, onClose }) => {
   });
   const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
+  const { setIsLoggedIn } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -48,8 +50,11 @@ const SignupForm = ({ open, onClose }) => {
       const response = await authClient.signupUser(formData);
       if (response.status === 201) {
         console.log("Signup successful");
+        setIsLoggedIn(true);
         onClose();
-        navigate("/create-habit");
+        setTimeout(() => {
+          navigate("/create-habit");
+        }, 100);
       } else if (response.status === 409) {
         setApiError("Email already exists");
       } else {
