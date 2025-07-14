@@ -19,6 +19,22 @@ const getHabitList = async () => {
   }
 };
 
+const getHabitById = async (habitId) => {
+  try {
+    const client = axios.create({ baseURL });
+    const response = await client.get(`/habit/${habitId}`, {
+      withCredentials: true,
+    });
+    return response;
+  } catch (error) {
+    console.warn(
+      "Api client getHabitById- Error details:",
+      JSON.stringify(error.response?.data || error.message)
+    );
+    throw error;
+  }
+};
+
 const createHabit = async (formData) => {
   const client = axios.create({ baseURL });
 
@@ -34,6 +50,42 @@ const createHabit = async (formData) => {
   }
 };
 
-const habitClient = { getHabitList, createHabit };
+const updateHabit = async (habitId, formData) => {
+  try {
+    const client = axios.create({ baseURL });
+    await client.put(`/habit/${habitId}`, formData, {
+      withCredentials: true,
+    });
+  } catch (error) {
+    console.warn(
+      "Api client update- Error details:",
+      JSON.stringify(error.response?.data || error.message)
+    );
+    throw error;
+  }
+};
+
+const deleteHabit = async (habitId) => {
+  try {
+    const client = axios.create({ baseURL });
+    await client.delete(`/habit/${habitId}`, {
+      withCredentials: true,
+    });
+  } catch (error) {
+    console.warn(
+      "Api client delete- Error details:",
+      JSON.stringify(error.response?.data || error.message)
+    );
+    throw error;
+  }
+};
+
+const habitClient = {
+  getHabitList,
+  getHabitById,
+  createHabit,
+  updateHabit,
+  deleteHabit,
+};
 
 export default habitClient;

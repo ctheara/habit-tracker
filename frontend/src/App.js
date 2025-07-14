@@ -3,6 +3,7 @@ import { createContext, useState, useContext } from "react";
 import "../src/assets/App.css";
 import HomePage from "./components/HomePage";
 import CreateHabitForm from "../src/features/habit/components/CreateHabit";
+import EditHabit from "../src/features/habit/components/EditHabit";
 import MainDashboard from "./components/MainDashboard";
 import authClient from "./features/auth/api/auth-client";
 import KeepAlivePing from "./utils/keep-backend-alive";
@@ -43,7 +44,7 @@ function App() {
             display: "flex",
             gap: "1rem",
             padding: "10px",
-            background: "#f5f5f5",
+            background: "#2c3e50",
             position: "fixed",
             top: 0,
             left: 0,
@@ -51,13 +52,18 @@ function App() {
             zIndex: 1000, // Ensures it's above other content
             justifyContent: "space-between",
             alignItems: "center",
+            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
           }}
         >
           <div style={{ display: "flex", gap: "1rem" }}>
             {!isLoggedIn && (
               <Link
                 to="/"
-                style={{ textDecoration: "none", fontWeight: "bold" }}
+                style={{
+                  textDecoration: "none",
+                  fontWeight: "bold",
+                  color: "white",
+                }}
               >
                 Home
               </Link>
@@ -66,13 +72,21 @@ function App() {
               <>
                 <Link
                   to="/create-habit"
-                  style={{ textDecoration: "none", fontWeight: "bold" }}
+                  style={{
+                    textDecoration: "none",
+                    fontWeight: "bold",
+                    color: "white",
+                  }}
                 >
                   Create Habit
                 </Link>
                 <Link
                   to="/dashboard"
-                  style={{ textDecoration: "none", fontWeight: "bold" }}
+                  style={{
+                    textDecoration: "none",
+                    fontWeight: "bold",
+                    color: "white",
+                  }}
                 >
                   Dashboard
                 </Link>
@@ -85,7 +99,31 @@ function App() {
               </>
             )}
           </div>
-          {isLoggedIn && <button onClick={handleLogout}>Logout</button>}
+          {isLoggedIn && (
+            <button
+              onClick={handleLogout}
+              style={{
+                background: "none",
+                border: "1px solid white",
+                color: "white",
+                padding: "8px 16px",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontWeight: "bold",
+                transition: "all 0.2s ease",
+              }}
+              onMouseOver={(e) => {
+                e.target.style.background = "white";
+                e.target.style.color = "#2c3e50";
+              }}
+              onMouseOut={(e) => {
+                e.target.style.background = "none";
+                e.target.style.color = "white";
+              }}
+            >
+              Logout
+            </button>
+          )}
         </nav>
 
         {/* Add padding to prevent content from being hidden behind the fixed navbar */}
@@ -94,6 +132,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/create-habit" element={<CreateHabitForm />} />
+            <Route path="/edit-habit/:habitId" element={<EditHabit />} />
             <Route path="/dashboard" element={<MainDashboard />} />
           </Routes>
         </div>

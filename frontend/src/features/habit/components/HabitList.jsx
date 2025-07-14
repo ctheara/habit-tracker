@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Table,
   TableBody,
@@ -12,7 +13,12 @@ import {
 import dayjs from "dayjs";
 
 const HabitList = ({ habits }) => {
+  const navigate = useNavigate();
   console.log(habits);
+
+  const handleRowClick = (habitId) => {
+    navigate(`/edit-habit/${habitId}`);
+  };
 
   return (
     <Box>
@@ -21,7 +27,7 @@ const HabitList = ({ habits }) => {
         gutterBottom
         sx={{
           fontWeight: "600",
-          color: "#2c3e50",
+          color: "#1a2233",
           mb: 3,
           display: "flex",
           alignItems: "center",
@@ -57,8 +63,12 @@ const HabitList = ({ habits }) => {
             "& .MuiTableHead-root .MuiTableCell-root": {
               backgroundColor: "#f8f9fa",
               fontWeight: "bold",
-              color: "#2c3e50",
+              color: "#1a2233",
               fontSize: "0.95rem",
+            },
+            "& .MuiTableBody-root .MuiTableRow-root": {
+              cursor: "pointer",
+              transition: "background-color 0.2s ease",
             },
             "& .MuiTableBody-root .MuiTableRow-root:hover": {
               backgroundColor: "#f5f5f5",
@@ -77,7 +87,10 @@ const HabitList = ({ habits }) => {
           </TableHead>
           <TableBody>
             {habits.map((habit) => (
-              <TableRow key={habit.habitId}>
+              <TableRow
+                key={habit.habitId}
+                onClick={() => handleRowClick(habit.habitId)}
+              >
                 <TableCell>
                   <Typography variant="subtitle1" sx={{ fontWeight: "500" }}>
                     {habit.habitName}
