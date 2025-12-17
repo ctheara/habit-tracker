@@ -26,7 +26,7 @@ const swaggerDocs = {
     },
   },
   paths: {
-    "/user/signup": {
+    "/v1/users/signup": {
       post: {
         summary: "Sign up new user",
         description: "Create a new user in the database",
@@ -95,7 +95,7 @@ const swaggerDocs = {
         },
       },
     },
-    "/user/login": {
+    "/v1/users/login": {
       post: {
         summary: "User login",
         description: "Login and get an authentication token",
@@ -133,7 +133,7 @@ const swaggerDocs = {
         },
       },
     },
-    "/user/me": {
+    "/v1/users/me": {
       get: {
         summary: "Get current user data",
         description: "Fetch the current user's data from the database",
@@ -161,7 +161,7 @@ const swaggerDocs = {
         },
       },
     },
-    "/habit/create": {
+    "/v1/habits/create": {
       post: {
         summary: "Create a new habit",
         description: "Add a new habit for the logged-in user",
@@ -212,7 +212,7 @@ const swaggerDocs = {
         },
       },
     },
-    "/habit/list": {
+    "/v1/habits/list": {
       get: {
         summary: "Get all habits of the current user",
         description: "Fetch all habits for the logged-in user",
@@ -251,7 +251,7 @@ const swaggerDocs = {
         },
       },
     },
-    "/habit/{habitId}": {
+    "/v1/habits/{habitId}": {
       get: {
         summary: "Get a specific habit",
         description: "Retrieve a habit by its ID",
