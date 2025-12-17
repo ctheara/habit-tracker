@@ -47,8 +47,8 @@ app.use(cookieParser());
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Routes
-app.use("/user", userRouter);
-app.use("/habit", habitRoute);
+app.use("/v1/users", userRouter);
+app.use("/v1/habits", habitRoute);
 app.use("/v1/coaches", coachRoute);
 
 app.get("/", (req, res) => {

@@ -2,9 +2,10 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { createContext, useState, useContext } from "react";
 import "../src/assets/App.css";
 import HomePage from "./components/HomePage";
+import MainDashboard from "./components/MainDashboard";
+import CoachPage from "./features/coach/components/CoachPage";
 import CreateHabitForm from "../src/features/habit/components/CreateHabit";
 import EditHabit from "../src/features/habit/components/EditHabit";
-import MainDashboard from "./components/MainDashboard";
 import authClient from "./features/auth/api/auth-client";
 import KeepAlivePing from "./utils/keep-backend-alive";
 
@@ -90,6 +91,16 @@ function App() {
                 >
                   Create Habit
                 </Link>
+                <Link
+                  to="/coach"
+                  style={{
+                    textDecoration: "none",
+                    fontWeight: "bold",
+                    color: "white",
+                  }}
+                >
+                  AI Coach
+                </Link>
                 {/* <Link
                 to="/dashboard"
                 style={{ textDecoration: "none", fontWeight: "bold" }}
@@ -134,6 +145,7 @@ function App() {
             <Route path="/create-habit" element={<CreateHabitForm />} />
             <Route path="/edit-habit/:habitId" element={<EditHabit />} />
             <Route path="/dashboard" element={<MainDashboard />} />
+            <Route path="/coach" element={<CoachPage />} />
           </Routes>
         </div>
       </Router>

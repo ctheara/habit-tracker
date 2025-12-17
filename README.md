@@ -17,6 +17,12 @@ The backend provides interactive API documentation using **Swagger**. You can ex
 
 - [https://habit-tracker-nyif.onrender.com/api-docs](https://habit-tracker-nyif.onrender.com/api-docs)
 
+**Avaliable Endpoints**
+
+- `/v1/users/*` - User authentication (signup, login, logout)
+- `/v1/habits/*` - Habit CRUD operations
+- `/v1/coaches/chat` - AI Habit coach chat
+
 ## Table of Contents
 
 - [Features](#features)
@@ -34,20 +40,24 @@ The backend provides interactive API documentation using **Swagger**. You can ex
 - User registration and login
 - Create, update, complete, and delete habits
 - Set goal dates and mark habits as achieved
+- **AI Habit Coach** Personalized coaching and motivation powered by GPT-5-mini
+  - Interactive chat interface
+  - Context-aware advice based on your habits
+  - Real-time AI responses with conversation history
 - Earn XP points for completing habits and maintaining streaks
 - Gamification: achievements, badges, rewards
 - Notifications and reminders (email and/or push)
 - Progress visualization and reports (stretch goal)
-- AI integration (stretch goal)
 
 ---
 
 ## Tech Stack
 
-- **Frontend:** React, Material-UI
-- **Backend:** Node.js, Express
+- **Frontend:** React, Material-UI, React Router
+- **Backend:** TypeScript, Node.js, Express
 - **Database:** PostgreSQL
 - **Authentication:** JWT (JSON Web Token), httpOnly cookies
+- **AI Integration:** OpenAI API (GPT-5-mini model)
 - **Other:** Vercel (frontend hosting), Render (backend hosting)
 
 ---

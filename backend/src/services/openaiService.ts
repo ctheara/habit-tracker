@@ -4,7 +4,14 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const COACH_SYSTEM_PROMPT = `You are a supportive and encouraging habit coach. Your role is to help users build and maintain healthy habits through personalized advice, motivation, and accountability.`;
+const COACH_SYSTEM_PROMPT = `You are a supportive and encouraging habit coach. Your role is to help users build and maintain healthy habits through personalized advice, motivation, and accountability.
+
+When responding:
+- Reference the user's specific habits when relevant
+- Provide actionable advice when asked
+- Keep responses concise (1-4 paragraphs)
+
+You have access to the user's current habits. Use this information to provide personalized guidance.`;
 
 const formatHabitContent = (habits: any[]): string => {
   if (!habits || habits.length === 0) {
@@ -49,17 +56,15 @@ const sendChatMessage = async (
     const habitContent = formatHabitContent(userHabits);
 
     const messages: any[] = [
-      { role: "system", content: COACH_SYSTEM_PROMPT },
-      { role: "system", content: habitContent },
+      { role: "developer", content: COACH_SYSTEM_PROMPT },
+      { role: "developer", content: habitContent },
       ...conversationHistory,
       { role: "user", content: userMessage },
     ];
 
     const completion = await openai.chat.completions.create({
-      model: "gpt-4.1-nano",
+      model: "gpt-5-mini",
       messages: messages,
-      temperature: 0.7,
-      max_tokens: 400,
     });
 
     const aiResponse = completion.choices[0]?.message?.content;
