@@ -8,6 +8,7 @@ import swaggerDocs from "./swagger.js";
 import userRouter from "./routes/userRoute.js";
 import habitRoute from "./routes/habitRoute.js";
 import errorHandler from "./middlewares/errorMiddleware.js";
+import sendChatMessage from "./services/openaiService.js";
 
 dotenv.config();
 
@@ -15,6 +16,8 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
+
+sendChatMessage.sendChatMessage("I am so bad at completing my goals");
 
 app.use(
   cors({

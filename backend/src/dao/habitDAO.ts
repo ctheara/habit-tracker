@@ -44,10 +44,6 @@ const getAllUserHabits = async (userId: number) => {
     const result = await pool.query(
       `SELECT * FROM habits WHERE user_id=${userId}`
     );
-    // console.log(`dao-result: ${JSON.stringify(result)}`);
-    // console.log(`dao-result.row: ${JSON.stringify(result.rows)}`);
-    // console.log(`dao-result.row: ${result.rows}`);
-    console.log("result.rows:");
     result.rows.forEach((element) => {
       console.log(JSON.stringify(element));
     });

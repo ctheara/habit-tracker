@@ -63,6 +63,7 @@ The backend provides interactive API documentation using **Swagger**. You can ex
 | `PGPASSWORD`             | PostgreSQL user password          | `yourpassword`              | Yes      | Backend only                                                 |
 | `JWT_SECRET_KEY`         | Secret key for signing JWT tokens | `your_jwt_secret`           | Yes      | Backend only                                                 |
 | `BASE_URL`               | Deployed url for backend service  | `https://habit-tracker.com` | Yes      | Backend only                                                 |
+| `OPENAI_API_KEY`         | OpenAI API Key                    | `your_openai_apikey`        | Yes      | Backend only                                                 |
 | `REACT_APP_API_BASE_URL` | Backend API base URL for frontend | `http://localhost:5000`     | No       | Frontend only. Optional for local run; defaults to localhost |
 
 **Notes:**
@@ -152,7 +153,7 @@ The backend provides interactive API documentation using **Swagger**. You can ex
   - Email or push notification/reminder
 - **Gamification**
   - Create achievement and badges, earn XP points and reward
- 
+
 ## ☁️ AWS Migration
 
 This application is being migrated to AWS serverless architecture!
@@ -160,6 +161,7 @@ This application is being migrated to AWS serverless architecture!
 **AWS Infrastructure Repository:** [habit-tracker-aws](https://github.com/ctheara/habit-tracker-aws)
 
 The AWS version includes:
+
 - Serverless backend with Lambda + API Gateway
 - Frontend hosted on S3 + CloudFront
 - Infrastructure as Code with CloudFormation
