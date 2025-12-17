@@ -7,8 +7,8 @@ import swaggerDocs from "./swagger.js";
 
 import userRouter from "./routes/userRoute.js";
 import habitRoute from "./routes/habitRoute.js";
+import coachRoute from "./routes/coachRoute.js";
 import errorHandler from "./middlewares/errorMiddleware.js";
-import sendChatMessage from "./services/openaiService.js";
 
 dotenv.config();
 
@@ -16,8 +16,6 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
-
-sendChatMessage.sendChatMessage("I am so bad at completing my goals");
 
 app.use(
   cors({
@@ -48,6 +46,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Routes
 app.use("/user", userRouter);
 app.use("/habit", habitRoute);
+app.use("/v1/coaches", coachRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello, TypeScript with Node.js!");
