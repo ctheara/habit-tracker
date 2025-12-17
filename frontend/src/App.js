@@ -44,7 +44,7 @@ function App() {
             display: "flex",
             gap: "1rem",
             padding: "10px",
-            background: "#2c3e50",
+            background: "#1a2233",
             position: "fixed",
             top: 0,
             left: 0,
@@ -71,16 +71,6 @@ function App() {
             {isLoggedIn && (
               <>
                 <Link
-                  to="/create-habit"
-                  style={{
-                    textDecoration: "none",
-                    fontWeight: "bold",
-                    color: "white",
-                  }}
-                >
-                  Create Habit
-                </Link>
-                <Link
                   to="/dashboard"
                   style={{
                     textDecoration: "none",
@@ -89,6 +79,16 @@ function App() {
                   }}
                 >
                   Dashboard
+                </Link>
+                <Link
+                  to="/create-habit"
+                  style={{
+                    textDecoration: "none",
+                    fontWeight: "bold",
+                    color: "white",
+                  }}
+                >
+                  Create Habit
                 </Link>
                 {/* <Link
                 to="/dashboard"
@@ -114,7 +114,7 @@ function App() {
               }}
               onMouseOver={(e) => {
                 e.target.style.background = "white";
-                e.target.style.color = "#2c3e50";
+                e.target.style.color = "#1a2233";
               }}
               onMouseOut={(e) => {
                 e.target.style.background = "none";

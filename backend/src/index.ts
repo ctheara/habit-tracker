@@ -7,6 +7,7 @@ import swaggerDocs from "./swagger.js";
 
 import userRouter from "./routes/userRoute.js";
 import habitRoute from "./routes/habitRoute.js";
+import coachRoute from "./routes/coachRoute.js";
 import errorHandler from "./middlewares/errorMiddleware.js";
 
 dotenv.config();
@@ -45,6 +46,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 // Routes
 app.use("/user", userRouter);
 app.use("/habit", habitRoute);
+app.use("/v1/coaches", coachRoute);
 
 app.get("/", (req, res) => {
   res.send("Hello, TypeScript with Node.js!");
