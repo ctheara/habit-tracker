@@ -28,7 +28,7 @@ const CoachPage = () => {
       {
         role: "assistant",
         content:
-          "Hi! I'm your habit coach. I'm here to help you build and maintain healthy habits. I can see your current habits and provide personalized advice. How can I support you today?",
+          "Hi! I'm your habit coach. I'm here to help you build and maintain healthy habits. I can see your current habits and provide personalized advice. How can I help you today?",
         timestamp: new Date().toISOString(),
       },
     ]);

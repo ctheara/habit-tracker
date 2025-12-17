@@ -7,7 +7,7 @@ const getHabitList = async () => {
     const client = axios.create({ baseURL });
     console.log("inside habit-client api");
 
-    const response = await client.get("/habit/list", {
+    const response = await client.get("/v1/habits/list", {
       withCredentials: true,
     });
     return response;
@@ -22,7 +22,7 @@ const getHabitList = async () => {
 const getHabitById = async (habitId) => {
   try {
     const client = axios.create({ baseURL });
-    const response = await client.get(`/habit/${habitId}`, {
+    const response = await client.get(`/v1/habits/${habitId}`, {
       withCredentials: true,
     });
     return response;
@@ -39,7 +39,7 @@ const createHabit = async (formData) => {
   const client = axios.create({ baseURL });
 
   try {
-    await client.post("/habit/create", formData, {
+    await client.post("/v1/habits/create", formData, {
       withCredentials: true,
     });
   } catch (error) {
@@ -53,7 +53,7 @@ const createHabit = async (formData) => {
 const updateHabit = async (habitId, formData) => {
   try {
     const client = axios.create({ baseURL });
-    await client.put(`/habit/${habitId}`, formData, {
+    await client.put(`/v1/habits/${habitId}`, formData, {
       withCredentials: true,
     });
   } catch (error) {
@@ -68,7 +68,7 @@ const updateHabit = async (habitId, formData) => {
 const deleteHabit = async (habitId) => {
   try {
     const client = axios.create({ baseURL });
-    await client.delete(`/habit/${habitId}`, {
+    await client.delete(`/v1/habits/${habitId}`, {
       withCredentials: true,
     });
   } catch (error) {

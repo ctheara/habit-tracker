@@ -11,7 +11,7 @@ const signupUser = async (userSignUpData) => {
     const client = axios.create({ baseURL });
 
     // use http-only cookies over local session storage to prevent XSS attacks
-    const response = await client.post("/user/signup", userSignUpData, {
+    const response = await client.post("/v1/users/signup", userSignUpData, {
       withCredentials: true,
     });
 
@@ -38,7 +38,7 @@ const loginUser = async (userLoginData) => {
   try {
     const client = axios.create({ baseURL });
 
-    const response = await client.post("/user/login", userLoginData, {
+    const response = await client.post("/v1/users/login", userLoginData, {
       withCredentials: true,
     });
 
@@ -63,7 +63,7 @@ const logoutUser = async () => {
   try {
     const client = axios.create({ baseURL });
 
-    await client.post("/user/logout", {}, { withCredentials: true });
+    await client.post("/v1/users/logout", {}, { withCredentials: true });
     console.log("Logged out successfully");
   } catch (err) {
     console.error("Logout failed:", err);
