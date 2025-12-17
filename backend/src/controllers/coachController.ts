@@ -7,49 +7,8 @@ const sendAiMessage = asyncHandler(async (req: any, res: any, next: any) => {
   const { message, conversationHistory } = req.body;
   const userId = req.user.id;
 
-  if (!message || typeof message !== "string") {
-    return next({
-      statusCode: 400,
-      message: "Message is required and must be a non-empty string",
-    });
-  }
-
-  if (message.length > 1000) {
-    return next({
-      statusCode: 400,
-      message: "Message is too long (max 1000 characters)",
-    });
-  }
-
-  if (conversationHistory !== undefined) {
-    if (!Array.isArray(conversationHistory)) {
-      return next({
-        statusCode: 400,
-        message: "Conversation history must be an array",
-      });
-    }
-
-    // Validate each message history
-    const isValidHistory = conversationHistory.every(
-      (msg) =>
-        msg &&
-        typeof msg === "object" &&
-        typeof msg.role === "string" &&
-        typeof msg.content === "string" &&
-        ["user", "assistant"].includes(msg.role)
-    );
-
-    if (!isValidHistory) {
-      return next({
-        statusCode: 400,
-        message: "Invalid conversation history format",
-      });
-    }
-  }
-
   try {
     const userHabits = await habitDAO.getAllUserHabits(userId);
-
     const aiReponse = await openaiService.sendChatMessage(
       message,
       conversationHistory || [],
@@ -59,8 +18,22 @@ const sendAiMessage = asyncHandler(async (req: any, res: any, next: any) => {
     return res
       .status(200)
       .json({ message: aiReponse, timestamp: new Date().toISOString() });
-  } catch (err) {
+  } catch (err: any) {
     console.warn(`Error in coach chat: ${JSON.stringify(err)}`);
+
+    if (err.message?.includes("API key")) {
+      return next({
+        statusCode: 500,
+        message: "AI service configuration error",
+      });
+    }
+
+    if (err.message?.includes("rate limit")) {
+      return next({
+        statusCode: 429,
+        message: "Too many requests to AI services. Plesae try again later",
+      });
+    }
 
     next({
       statusCode: 500,

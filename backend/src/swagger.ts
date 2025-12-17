@@ -398,6 +398,126 @@ const swaggerDocs = {
         },
       },
     },
+    "/v1/coaches/chat": {
+      post: {
+        summary: "Send a message to the AI coach",
+        description:
+          "Send a message to the AI coach and receive a response based on your habits and conversation history",
+        security: [{ cookieAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            "application/json": {
+              schema: {
+                type: "object",
+                properties: {
+                  message: {
+                    type: "string",
+                    example: "How can I stay motivated for my habit?",
+                  },
+                  conversationHistory: {
+                    type: "array",
+                    description:
+                      "Optional previous messages in the conversation",
+                    items: {
+                      type: "object",
+                      properties: {
+                        role: {
+                          type: "string",
+                          enum: ["user", "assistant"],
+                          example: "user",
+                        },
+                        content: {
+                          type: "string",
+                          example: "I feel like giving up on my habit",
+                        },
+                      },
+                    },
+                  },
+                },
+                required: ["message"],
+              },
+            },
+          },
+        },
+        responses: {
+          "200": {
+            description: "AI coach responded successfully",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example:
+                        "Keep pushing! Remember why you started and take it one day at a time.",
+                    },
+                    timestamp: {
+                      type: "string",
+                      format: "date-time",
+                      example: "2025-12-17T12:34:56.789Z",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          "400": {
+            description:
+              "Invalid input (e.g., missing message or malformed conversation history)",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example:
+                        "Message is required and must be a non-empty string",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          "429": {
+            description: "Too many requests to AI service",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example:
+                        "Too many requests to AI services. Please try again later.",
+                    },
+                  },
+                },
+              },
+            },
+          },
+          "500": {
+            description: "Server error or AI service configuration error",
+            content: {
+              "application/json": {
+                schema: {
+                  type: "object",
+                  properties: {
+                    message: {
+                      type: "string",
+                      example:
+                        "Failed to process your message. Please try again later.",
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   },
 };
 
