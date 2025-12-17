@@ -152,3 +152,15 @@ The backend provides interactive API documentation using **Swagger**. You can ex
   - Email or push notification/reminder
 - **Gamification**
   - Create achievement and badges, earn XP points and reward
+ 
+## ☁️ AWS Migration
+
+This application is being migrated to AWS serverless architecture!
+
+**AWS Infrastructure Repository:** [habit-tracker-aws](https://github.com/ctheara/habit-tracker-aws)
+
+The AWS version includes:
+- Serverless backend with Lambda + API Gateway
+- Frontend hosted on S3 + CloudFront
+- Infrastructure as Code with CloudFormation
+- CI/CD pipeline with CodePipeline
