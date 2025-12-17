@@ -17,6 +17,9 @@ const app = express();
 const port = process.env.PORT || 5000;
 const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
 
+// TRUST proxy so rateLimit can read the correct IP
+app.set("trust proxy", 1);
+
 app.use(
   cors({
     origin: function (origin, callback) {
