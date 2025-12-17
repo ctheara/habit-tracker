@@ -1,8 +1,11 @@
 import asyncHandler from "express-async-handler";
+
 import openaiService from "../services/openaiService.js";
+import habitDAO from "../dao/habitDAO.js";
 
 const sendAiMessage = asyncHandler(async (req: any, res: any, next: any) => {
   const { message, conversationHistory } = req.body;
+  const userId = req.user.id;
 
   if (!message || typeof message !== "string") {
     return next({
@@ -45,9 +48,12 @@ const sendAiMessage = asyncHandler(async (req: any, res: any, next: any) => {
   }
 
   try {
+    const userHabits = await habitDAO.getAllUserHabits(userId);
+
     const aiReponse = await openaiService.sendChatMessage(
       message,
-      conversationHistory || []
+      conversationHistory || [],
+      userHabits
     );
 
     return res

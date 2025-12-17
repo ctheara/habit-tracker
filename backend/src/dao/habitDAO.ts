@@ -44,9 +44,9 @@ const getAllUserHabits = async (userId: number) => {
     const result = await pool.query(
       `SELECT * FROM habits WHERE user_id=${userId}`
     );
-    result.rows.forEach((element) => {
-      console.log(JSON.stringify(element));
-    });
+    // result.rows.forEach((element) => {
+    //   console.log(JSON.stringify(element));
+    // });
 
     return result.rows;
   } catch (err) {
