@@ -40,7 +40,7 @@ The backend provides interactive API documentation using **Swagger**. You can ex
 - User registration and login
 - Create, update, complete, and delete habits
 - Set goal dates and mark habits as achieved
-- **AI Habit Coach** Personalized coaching and motivation powered by GPT-5-mini
+- **AI Habit Coach:** Personalized coaching and motivation powered by GPT-5-mini
   - Interactive chat interface
   - Context-aware advice based on your habits
   - Real-time AI responses with conversation history

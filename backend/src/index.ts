@@ -20,26 +20,31 @@ const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
 // TRUST proxy so rateLimit can read the correct IP
 app.set("trust proxy", 1);
 
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://habit-tracker-fawn-omega.vercel.app",
+];
+
 app.use(
   cors({
-    origin: function (origin, callback) {
-      const allowedOrigins = [
-        "http://localhost:3000",
-        "https://habit-tracker-fawn-omega.vercel.app",
-      ];
-      // Allow requests from Postman and curl
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.indexOf(origin) === -1) {
-        const msg = `CORS policy does not allow access from origin ${origin}`;
-        return callback(new Error(msg), false);
+    origin: (origin, callback) => {
+      if (!origin) {
+        return callback(null, true);
       }
-      return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(null, false);
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+// Handle preflight requests
+app.options("*", cors());
 
 // Middlewares
 app.use(express.json());
