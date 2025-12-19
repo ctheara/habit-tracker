@@ -70,6 +70,27 @@ const logoutUser = async () => {
   }
 };
 
-const authClient = { signupUser, loginUser, logoutUser };
+/**
+ * Verify if user is authenticated by checking JWT cookie
+ * @return object with status and authenticated boolean
+ */
+const verifyAuth = async () => {
+  try {
+    const client = axios.create({ baseURL });
+
+    const response = await client.get("/v1/users/me", {
+      withCredentials: true,
+    });
+
+    if (response.status === 200) {
+      return { authenticated: true, user: response.data };
+    }
+  } catch (error) {
+    console.log("User not authenticated");
+    return { authenticated: false };
+  }
+};
+
+const authClient = { signupUser, loginUser, logoutUser, verifyAuth };
 
 export default authClient;
