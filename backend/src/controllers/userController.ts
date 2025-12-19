@@ -35,12 +35,8 @@ const signUpUser = async (req: any, res: any, next: any) => {
       const token = generateToken(userResult.id, email);
 
       // use http-only cookies over local session storage to prevent XSS attacks
-      res.cookie("authToken", token, {
-        httpOnly: true,
-        secure: true, // sents over HTTPS
-        sameSite: "None",
-        maxAge: 1000 * 60 * 60 * 8, // 8 hours expiration
-      });
+      const cookieOptions = getCookieOptions();
+      res.cookie("authToken", token, cookieOptions);
 
       return res.status(201).json({ token: token });
     }
@@ -63,12 +59,8 @@ const loginUser = async (req: any, res: any, next: any) => {
       const token = generateToken(user.id, email);
 
       // use http-only cookies over local session storage to prevent XSS attacks
-      res.cookie("authToken", token, {
-        httpOnly: true,
-        secure: true, // sents over HTTPS
-        sameSite: "None",
-        maxAge: 1000 * 60 * 60 * 8, // 8 hours expiration
-      });
+      const cookieOptions = getCookieOptions();
+      res.cookie("authToken", token, cookieOptions);
 
       return res.status(200).json({ token: token });
     } else {
@@ -81,11 +73,8 @@ const loginUser = async (req: any, res: any, next: any) => {
 };
 
 const logoutUser = async (req: any, res: any, next: any) => {
-  res.clearCookie("authToken", {
-    httpOnly: true,
-    secure: true,
-    sameSite: "None",
-  });
+  const cookieOptions = getCookieOptions();
+  res.clearCookie("authToken", cookieOptions);
 
   console.log("logout successfully");
   res.status(200).json({ message: "Logged out successfully" });
@@ -105,6 +94,17 @@ const getUser = async (req: any, res: any, next: any) => {
     console.warn(`Error while getting user ${JSON.stringify(err)}`);
     next(err);
   }
+};
+
+const getCookieOptions = () => {
+  const isProduction = process.env.NODE_ENV === "production";
+
+  return {
+    httpOnly: true,
+    secure: isProduction, // Only require HTTPS in production
+    sameSite: isProduction ? ("None" as const) : ("Lax" as const), // "None" for cross-origin in production, "Lax" for same-site in development
+    maxAge: 1000 * 60 * 60 * 8, // 8 hours expiration
+  };
 };
 
 const generateToken = (id: number, email: string) => {

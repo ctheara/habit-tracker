@@ -28,15 +28,22 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, Postman, or server-to-server)
       if (!origin) {
+        console.log("Request with no origin header - allowing");
         return callback(null, true);
       }
 
       if (allowedOrigins.includes(origin)) {
+        console.log(`Request from allowed origin: ${origin}`);
         return callback(null, true);
       }
 
-      return callback(null, false);
+      console.warn(`CORS blocked request from origin: ${origin}`);
+      return callback(
+        new Error(`CORS policy does not allow access from origin: ${origin}`),
+        false
+      );
     },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
