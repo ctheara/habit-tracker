@@ -10,7 +10,6 @@ const signUpUser = async (req: any, res: any, next: any) => {
   const { firstName, lastName, email, password } = req.body;
 
   if (!firstName || !lastName || !email || !password) {
-    console.log("Input missing error");
     throw { statusCode: 400, message: "Required input fields missing" };
   }
 
@@ -76,7 +75,6 @@ const logoutUser = async (req: any, res: any, next: any) => {
   const cookieOptions = getCookieOptions();
   res.clearCookie("authToken", cookieOptions);
 
-  console.log("logout successfully");
   res.status(200).json({ message: "Logged out successfully" });
 };
 

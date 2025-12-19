@@ -14,7 +14,6 @@ import dayjs from "dayjs";
 
 const HabitList = ({ habits }) => {
   const navigate = useNavigate();
-  console.log(habits);
 
   const handleRowClick = (habitId) => {
     navigate(`/edit-habit/${habitId}`);

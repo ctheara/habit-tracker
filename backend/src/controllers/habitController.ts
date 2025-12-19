@@ -5,7 +5,6 @@ const createHabit = async (req: any, res: any, next: any) => {
   const { habitName, description, motivation, duration, targetDate } = req.body;
 
   if (!habitName) {
-    console.log("Input missing error");
     return next({ statusCode: 400, message: "Required input fields missing" });
   }
 

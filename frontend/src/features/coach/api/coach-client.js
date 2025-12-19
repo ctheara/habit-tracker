@@ -22,7 +22,6 @@ const sendMessage = async (message, conversationHistory = []) => {
       }
     );
 
-    console.log("Coach API response:", response.data);
     return response.data;
   } catch (error) {
     console.warn(

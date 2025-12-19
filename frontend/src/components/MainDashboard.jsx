@@ -9,7 +9,6 @@ const MainDashboard = ({ open, onClose }) => {
 
   const loadHabitList = async () => {
     try {
-      console.log("trying to get habit list");
       const response = await habitClient.getHabitList();
       setHabitList(response.data);
     } catch (error) {

@@ -18,7 +18,6 @@ const signupUser = async (userSignUpData) => {
     if (response.status === 201) {
       return { status: response.status };
     } else {
-      console.log("Unexpected response:", response);
       return { status: response.status };
     }
   } catch (error) {
@@ -42,12 +41,7 @@ const loginUser = async (userLoginData) => {
       withCredentials: true,
     });
 
-    console.log(`response authclient api: ${JSON.stringify(response)}`);
-
     if (response.status === 200) {
-      console.log(
-        `response.status: ${JSON.stringify({ status: response.status })}`
-      );
       return { status: response.status };
     }
   } catch (error) {

@@ -49,7 +49,6 @@ const SignupForm = ({ open, onClose }) => {
     try {
       const response = await authClient.signupUser(formData);
       if (response.status === 201) {
-        console.log("Signup successful");
         setIsLoggedIn(true);
         onClose();
         setTimeout(() => {
@@ -61,7 +60,6 @@ const SignupForm = ({ open, onClose }) => {
         throw new Error("Unexpected response from server");
       }
     } catch (err) {
-      console.log(JSON.stringify(err));
       setApiError("An error occurred. Please try again.");
     }
   };

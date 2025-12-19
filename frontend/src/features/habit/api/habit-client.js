@@ -5,7 +5,6 @@ const baseURL = process.env.REACT_APP_API_BASE_URL ?? "http://localhost:5000";
 const getHabitList = async () => {
   try {
     const client = axios.create({ baseURL });
-    console.log("inside habit-client api");
 
     const response = await client.get("/v1/habits/list", {
       withCredentials: true,
